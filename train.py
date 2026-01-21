@@ -29,7 +29,7 @@ def train_model(epochs=10, lr=0.001, device="cpu"):
         train_acc = correct / total
         print(f"Epoch {epoch+1}/{epochs} - Loss: {train_loss:.4f} - Acc: {train_acc:.4f}")
 
-    # Evaluate
+    # Evaluation
     model.eval()
     correct, total = 0, 0
     with torch.no_grad():

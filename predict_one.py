@@ -5,6 +5,8 @@ from features import extract_mfcc_file
 import pandas as pd
 
 ESC_META = "data/ESC50/meta/esc50.csv"
+
+# Build mapping from target id to category label
 df = pd.read_csv(ESC_META)
 id_to_label = df.groupby("target")["category"].first().to_dict()
 
@@ -28,5 +30,6 @@ def predict_file(path, device="cpu"):
 
 if __name__ == "__main__":
     device = "cuda" if torch.cuda.is_available() else "cpu"
+    # Use first file from esc50.csv
     test_path = "data/ESC50/audio/" + df.iloc[0]["filename"]
     predict_file(test_path, device=device)

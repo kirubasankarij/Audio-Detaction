@@ -13,7 +13,7 @@ class ESC50Dataset(Dataset):
         return len(self.y)
 
     def __getitem__(self, idx):
-        x = self.X[idx].unsqueeze(0)  # (1, 40, 216)
+        x = self.X[idx].unsqueeze(0)  # (1, 40, max_len)
         return x, self.y[idx]
 
 class AudioCNN(nn.Module):
@@ -22,7 +22,9 @@ class AudioCNN(nn.Module):
         self.conv1 = nn.Conv2d(1, 16, kernel_size=3, padding=1)
         self.conv2 = nn.Conv2d(16, 32, kernel_size=3, padding=1)
         self.pool = nn.MaxPool2d(2, 2)
-        # MFCC: (1, 40, 216) -> (32, 10, 54)
+        # Input MFCC shape: (1, 40, 216)
+        # After conv1 + pool: (16, 20, 108)
+        # After conv2 + pool: (32, 10, 54)
         self.fc1 = nn.Linear(32 * 10 * 54, 256)
         self.fc2 = nn.Linear(256, num_classes)
         self.dropout = nn.Dropout(0.3)
